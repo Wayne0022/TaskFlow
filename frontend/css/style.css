@@ -1,0 +1,307 @@
+/* TaskFlow — styles de base */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    background: #f4f6fb;
+}
+
+a {
+    color: #4f46e5;
+}
+
+a:hover {
+    color: #3730a3;
+}
+
+/* --- Auth (login / register) --- */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
+.auth-subtitle {
+    margin: 0 0 1.5rem;
+    text-align: center;
+    color: #64748b;
+}
+
+.auth-footer {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* --- Formulaires --- */
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label,
+fieldset legend {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+fieldset {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0;
+}
+
+.field-error {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: #dc2626;
+}
+
+.form-error {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #dc2626;
+    font-size: 0.9rem;
+}
+
+.form-success {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #15803d;
+    font-size: 0.9rem;
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* --- Boutons --- */
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #4338ca;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.btn-secondary:hover {
+    background: #cbd5e1;
+    color: #1e293b;
+}
+
+.auth-card .btn-primary {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* --- Pages protégées --- */
+
+.page-header {
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.page-header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+    color: #1a1a2e;
+}
+
+.page-header nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.nav-user {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.page-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.page-content h1 {
+    margin: 0 0 1.5rem;
+}
+
+.form-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    max-width: 560px;
+}
+
+/* --- Listes --- */
+
+.project-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.project-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.project-card a {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-card a:hover h2 {
+    color: #4f46e5;
+}
+
+.project-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+}
+
+.project-card p {
+    margin: 0 0 0.5rem;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.project-meta {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.empty-state {
+    color: #64748b;
+}
+
+.member-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.member-checklist li {
+    padding: 0.35rem 0;
+}
+
+.member-checklist label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.member-email {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}

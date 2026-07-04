@@ -1,0 +1,34 @@
+# ============================================
+# TaskFlow — .gitignore
+# ============================================
+
+# Variables d'environnement — NE JAMAIS COMMITER
+.env
+
+# Dépendances (si Composer utilisé plus tard)
+/vendor/
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+*.cache
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Uploads utilisateurs (contenu dynamique, pas du code)
+/frontend/uploads/
+
+# Config locale spécifique à la machine
+config/local.php
