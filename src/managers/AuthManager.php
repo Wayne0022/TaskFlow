@@ -20,7 +20,6 @@ class AuthManager
             'id'          => $user['id'],
             'username'    => $user['username'],
             'email'       => $user['email'],
-            'avatar_seed' => $user['avatar_seed'],
         ];
 
         return true;

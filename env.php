@@ -23,6 +23,10 @@ function loadEnv(string $path): void {
         $key   = trim($key);
         $value = trim($value);
 
+        // Ignore les commentaires en fin de ligne : KEY=value # commentaire
+        $value = preg_replace('/\s+#.*$/', '', $value);
+        $value = trim($value, " \t\n\r\0\x0B\"'");
+
         // Ne pas écraser une variable déjà définie (priorité au système)
         if (!getenv($key)) {
             putenv("$key=$value");
@@ -32,4 +36,4 @@ function loadEnv(string $path): void {
 }
 
 // Chargement automatique dès l'inclusion de ce fichier
-loadEnv(__DIR__ . '/../.env');
+loadEnv(__DIR__ . '/.env');

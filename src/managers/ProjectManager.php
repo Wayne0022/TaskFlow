@@ -63,6 +63,54 @@ class ProjectManager
         }
     }
 
+    public static function addMembersToProject(int $projectId, int $userId, array $memberIds): array
+    {
+        $project = ProjectDB::findById($projectId);
+
+        if ($project === null) {
+            return ['errors' => ['general' => 'Projet non trouvé.']];
+        }
+
+        if ((int) $project['owner_id'] !== $userId) {
+            return ['errors' => ['general' => 'Seul le propriétaire peut ajouter des membres.']];
+        }
+
+        $pdo = Database::getConnection();
+        $pdo->beginTransaction();
+
+        try {
+            $addedCount = 0;
+            $uniqueMemberIds = array_unique(array_map('intval', $memberIds));
+
+            foreach ($uniqueMemberIds as $memberId) {
+                if ($memberId <= 0 || $memberId === $userId) {
+                    continue;
+                }
+
+                if (UserDB::findById($memberId) === null) {
+                    continue;
+                }
+
+                if (ProjectMemberDB::isMember($projectId, $memberId)) {
+                    continue;
+                }
+
+                if (ProjectMemberDB::addMember($projectId, $memberId, 'member')) {
+                    $addedCount++;
+                }
+            }
+
+            $pdo->commit();
+
+            return ['success' => true, 'added_count' => $addedCount];
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            error_log('Project member add failed: ' . $e->getMessage());
+
+            return ['errors' => ['general' => 'Impossible d\'ajouter les membres.']];
+        }
+    }
+
     public static function getProjectWithMembers(int $projectId): ?array
     {
         $project = ProjectDB::findById($projectId);
@@ -75,6 +123,11 @@ class ProjectManager
             'project' => $project,
             'members' => ProjectMemberDB::getMembersByProject($projectId),
         ];
+    }
+
+    public static function getAvailableMembersForProject(int $projectId): array
+    {
+        return ProjectMemberDB::getAvailableUsersForProject($projectId);
     }
 
     public static function getUserProjects(int $userId): array

@@ -4,10 +4,15 @@
 // ============================================
 
 require_once __DIR__ . '/../env.php';
+require_once __DIR__ . '/../src/helpers/ErrorHandler.php';
+require_once __DIR__ . '/../src/helpers/SecurityHelper.php';
 
 define('APP_URL', rtrim(getenv('APP_URL') ?: 'http://localhost/taskflow', '/'));
 define('APP_ENV', getenv('APP_ENV') ?: 'development');
 define('CLAUDE_API_KEY', getenv('CLAUDE_API_KEY') ?: '');
+
+// Initialiser la gestion des erreurs
+ErrorHandler::init();
 
 function isProduction(): bool
 {

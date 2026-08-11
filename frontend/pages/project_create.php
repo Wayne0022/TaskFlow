@@ -15,22 +15,30 @@ $description = '';
 $selectedMembers = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $selectedMembers = array_map('intval', $_POST['members'] ?? []);
+    // Valider le token CSRF
+    $csrfToken = $_POST['csrf_token'] ?? '';
+    if (!SecurityHelper::validateCsrfToken($csrfToken)) {
+        $errors['general'] = 'Token de sécurité invalide.';
+    }
 
-    $result = ProjectManager::createProject(
-        $name,
-        $description,
-        (int) $user['id'],
-        $selectedMembers
-    );
+    if (empty($errors)) {
+        $name = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $selectedMembers = array_map('intval', $_POST['members'] ?? []);
 
-    if (isset($result['errors'])) {
-        $errors = $result['errors'];
-    } else {
-        header('Location: project.php?id=' . $result['project_id']);
-        exit;
+        $result = ProjectManager::createProject(
+            $name,
+            $description,
+            (int) $user['id'],
+            $selectedMembers
+        );
+
+        if (isset($result['errors'])) {
+            $errors = $result['errors'];
+        } else {
+            header('Location: project.php?id=' . $result['project_id']);
+            exit;
+        }
     }
 }
 ?>
@@ -41,14 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nouveau projet — TaskFlow</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="../js/theme.js" defer></script>
 </head>
 <body>
     <header class="page-header">
         <div class="page-header-inner">
             <a href="dashboard.php" class="logo">TaskFlow</a>
             <nav>
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="Basculer le thème" aria-pressed="false">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
                 <span class="nav-user"><?= htmlspecialchars($user['username']) ?></span>
-                <a href="logout.php" class="btn btn-secondary">Déconnexion</a>
+                <a href="logout.php" class="btn btn-secondary"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
             </nav>
         </div>
     </header>
@@ -61,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="post" action="project_create.php" class="form-card" novalidate>
+            <input type="hidden" name="csrf_token" value="<?= SecurityHelper::generateCsrfToken() ?>">
             <div class="form-group">
                 <label for="name">Nom du projet</label>
                 <input
@@ -106,8 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Créer le projet</button>
-                <a href="dashboard.php" class="btn btn-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-folder-plus"></i> Créer le projet</button>
+                <a href="dashboard.php" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i> Annuler</a>
             </div>
         </form>
     </main>

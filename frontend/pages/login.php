@@ -11,17 +11,25 @@ $errors = [];
 $email = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($email === '') {
-        $errors['email'] = 'L\'email est requis.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'Email invalide.';
+    // Valider le token CSRF
+    $csrfToken = $_POST['csrf_token'] ?? '';
+    if (!SecurityHelper::validateCsrfToken($csrfToken)) {
+        $errors['general'] = 'Token de sécurité invalide.';
     }
 
-    if ($password === '') {
-        $errors['password'] = 'Le mot de passe est requis.';
+    if (empty($errors)) {
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if ($email === '') {
+            $errors['email'] = 'L\'email est requis.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Email invalide.';
+        }
+
+        if ($password === '') {
+            $errors['password'] = 'Le mot de passe est requis.';
+        }
     }
 
     if ($errors === [] && !AuthManager::login($email, $password)) {
@@ -41,10 +49,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion — TaskFlow</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="../js/theme.js" defer></script>
 </head>
 <body>
     <main class="auth-page">
         <div class="auth-card">
+            <div class="auth-actions">
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="Basculer le thème" aria-pressed="false">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
             <h1>TaskFlow</h1>
             <p class="auth-subtitle">Connectez-vous à votre compte</p>
 
@@ -57,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="post" action="login.php" novalidate>
+                <input type="hidden" name="csrf_token" value="<?= SecurityHelper::generateCsrfToken() ?>">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input
@@ -86,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</button>
             </form>
 
             <p class="auth-footer">
